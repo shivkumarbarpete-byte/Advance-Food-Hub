@@ -13,13 +13,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
   <!-- jsPDF -->
-   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Barcode Scanner Library -->
-<script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
-  
-  
+  <!-- Barcode Scanner Library (Quagga2) -->
+  <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -63,28 +62,31 @@
       </div>
     </div>
   </section>
-<section class="section" style="padding: 40px 0; background: var(--bg-white);">
-  <div class="container">
-    <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
-      <div class="kpi-card" style="background: #f0fdf4; border-left: 5px solid #16a34a;">
-        <div class="kpi-title">Total Scans</div>
-        <div class="kpi-value" id="dash_total" style="color:#16a34a;">0</div>
-      </div>
-      <div class="kpi-card" style="background: #dcfce7; border-left: 5px solid #059669;">
-        <div class="kpi-title">Safe Products</div>
-        <div class="kpi-value" id="dash_safe" style="color:#059669;">0</div>
-      </div>
-      <div class="kpi-card" style="background: #fef2f2; border-left: 5px solid #dc2626;">
-        <div class="kpi-title">Unsafe Products</div>
-        <div class="kpi-value" id="dash_unsafe" style="color:#dc2626;">0</div>
-      </div>
-      <div class="kpi-card" style="background: #fef3c7; border-left: 5px solid #d97706;">
-        <div class="kpi-title">Avg Risk Score</div>
-        <div class="kpi-value" id="dash_avg" style="color:#d97706;">0%</div>
+
+  <!-- Dashboard Section -->
+  <section class="section" style="padding: 40px 0; background: var(--bg-white);">
+    <div class="container">
+      <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="kpi-card" style="background: #f0fdf4; border-left: 5px solid #16a34a;">
+          <div class="kpi-title">Total Scans</div>
+          <div class="kpi-value" id="dash_total" style="color:#16a34a;">0</div>
+        </div>
+        <div class="kpi-card" style="background: #dcfce7; border-left: 5px solid #059669;">
+          <div class="kpi-title">Safe Products</div>
+          <div class="kpi-value" id="dash_safe" style="color:#059669;">0</div>
+        </div>
+        <div class="kpi-card" style="background: #fef2f2; border-left: 5px solid #dc2626;">
+          <div class="kpi-title">Unsafe Products</div>
+          <div class="kpi-value" id="dash_unsafe" style="color:#dc2626;">0</div>
+        </div>
+        <div class="kpi-card" style="background: #fef3c7; border-left: 5px solid #d97706;">
+          <div class="kpi-title">Avg Risk Score</div>
+          <div class="kpi-value" id="dash_avg" style="color:#d97706;">0%</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <!-- About Section -->
   <section id="about" class="section">
     <div class="container reveal">
@@ -177,57 +179,57 @@
       </div>
     </div>
   </section>
- 
 
   <!-- Analyzer Section -->
   <section id="analyzer" class="section" style="background: var(--bg-light);">
     <div class="container reveal">
        <!-- ========== BARCODE SCANNER SECTION ========== -->
-<div class="card" style="margin-bottom: 20px;">
-    <h3><i class="fas fa-barcode"></i> Barcode Scanner</h3>
-    <p style="font-size:0.85rem; color:#6b7280; margin-bottom:15px;">Scan barcode from camera or upload image. Fetches REAL product data from Open Food Facts database.</p>
-    
-    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
-        <!-- Camera Scan Button -->
-        <button id="startCameraBtn" class="btn" style="background:#16a34a; color:white;">
-            <i class="fas fa-camera"></i> Camera Scan
-        </button>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3><i class="fas fa-barcode"></i> Barcode Scanner</h3>
+        <p style="font-size:0.85rem; color:#6b7280; margin-bottom:15px;">Scan barcode from camera or upload image. Fetches REAL product data from Open Food Facts database.</p>
         
-        <!-- Upload Image Button -->
-        <label class="btn" style="background:#2563eb; color:white; cursor:pointer;">
-            <i class="fas fa-upload"></i> Upload Barcode Image
-            <input type="file" id="barcodeFileInput" accept="image/*" style="display:none;">
-        </label>
-        
-        <!-- Manual Enter -->
-        <input type="text" id="manualBarcode" placeholder="Or type barcode number (EAN-13)" 
-               style="flex:1; min-width:200px; padding:10px 15px; border:2px solid #e5e7eb; border-radius:8px; font-size:0.95rem;">
-        <button id="lookupBarcodeBtn" class="btn" style="background:#f59e0b; color:white;">
-            <i class="fas fa-search"></i> Lookup
-        </button>
-    </div>
-    
-    <!-- Camera View (hidden by default) -->
-    <div id="cameraContainer" style="display:none; position:relative; margin-bottom:15px;">
-        <div id="cameraView" style="width:100%; height:350px; border:3px solid #16a34a; border-radius:10px; overflow:hidden; position:relative; background:#000;">
-            <!-- Quagga will render here -->
-        </div>
-        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none;">
-            <div style="width:250px; height:80px; border:3px solid #16a34a; border-radius:8px; box-shadow:0 0 0 9999px rgba(0,0,0,0.4);"></div>
-        </div>
-        <div style="text-align:center; margin-top:8px;">
-            <button id="stopCameraBtn" class="btn" style="background:#dc2626; color:white;">
-                <i class="fas fa-stop"></i> Stop Camera
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
+            <!-- Camera Scan Button -->
+            <button id="startCameraBtn" class="btn" style="background:#16a34a; color:white;">
+                <i class="fas fa-camera"></i> Camera Scan
+            </button>
+            
+            <!-- Upload Image Button -->
+            <label class="btn" style="background:#2563eb; color:white; cursor:pointer;">
+                <i class="fas fa-upload"></i> Upload Barcode Image
+                <input type="file" id="barcodeFileInput" accept="image/*" style="display:none;">
+            </label>
+            
+            <!-- Manual Enter -->
+            <input type="text" id="manualBarcode" placeholder="Or type barcode number (EAN-13)" 
+                   style="flex:1; min-width:200px; padding:10px 15px; border:2px solid #e5e7eb; border-radius:8px; font-size:0.95rem;">
+            <button id="lookupBarcodeBtn" class="btn" style="background:#f59e0b; color:white;">
+                <i class="fas fa-search"></i> Lookup
             </button>
         </div>
-        <p style="text-align:center; font-size:0.8rem; color:#16a34a; margin-top:5px;">
-            📷 Point barcode inside the green frame
-        </p>
-    </div>
-    
-    <!-- Result Area -->
-    <div id="barcodeResult" style="display:none;"></div>
-</div>
+        
+        <!-- Camera View (hidden by default) -->
+        <div id="cameraContainer" style="display:none; position:relative; margin-bottom:15px;">
+            <div id="cameraView" style="width:100%; height:350px; border:3px solid #16a34a; border-radius:10px; overflow:hidden; position:relative; background:#000;">
+                <!-- Quagga will render here -->
+            </div>
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none;">
+                <div style="width:250px; height:80px; border:3px solid #16a34a; border-radius:8px; box-shadow:0 0 0 9999px rgba(0,0,0,0.4);"></div>
+            </div>
+            <div style="text-align:center; margin-top:8px;">
+                <button id="stopCameraBtn" class="btn" style="background:#dc2626; color:white;">
+                    <i class="fas fa-stop"></i> Stop Camera
+                </button>
+            </div>
+            <p style="text-align:center; font-size:0.8rem; color:#16a34a; margin-top:5px;">
+                📷 Point barcode inside the green frame
+            </p>
+        </div>
+        
+        <!-- Result Area -->
+        <div id="barcodeResult" style="display:none;"></div>
+      </div>
+
       <div class="section-title">
         <h2>Product Safety Analyzer</h2>
         <p>Comprehensive food product analysis with FSSAI compliance checking and risk assessment</p>
@@ -249,7 +251,6 @@
             <div class="col">
               <div class="form-group">
                 <label class="form-label">Category</label>
-              
                 <div id="catWarning" style="margin-top:-10px; margin-bottom:15px; font-size:0.85rem; color:#dc2626; display:none; padding:8px; background:#fef2f2; border-radius:5px;"></div>
                   <select class="form-select" id="p_cat">
                   <option>Packaged Snack</option> 
@@ -370,20 +371,15 @@
           <div class="form-group">
             <label class="form-label">CSV Upload (Batch Analysis)</label>
             <input type="file" class="form-control" id="csvFile" accept=".csv">
-            <!-- HTML mein ye div add karein csvFile input ke niche -->
-<div id="csv-batch-results" style="margin-top: 20px;">
-    <!-- Yahan CSV ka analysis aayega -->
-</div>
+            <div id="csv-batch-results" style="margin-top: 20px;"></div>
           </div>
-          <div class="form-group">
-  <label class="form-label">Upload Product Label / Photo (for OCR & Visual Check)</label>
-  <input type="file" class="form-control" id="labelImage" accept="image/*">
-  <div id="imagePreview" style="margin-top:10px; max-width:300px;"></div>
 
-  
-  <!-- IMAGE RESULT Box -->
-  <div id="imageResult"></div>
-</div>
+          <div class="form-group">
+            <label class="form-label">Upload Product Label / Photo (for Visual Check)</label>
+            <input type="file" class="form-control" id="labelImage" accept="image/*">
+            <div id="imagePreview" style="margin-top:10px; max-width:300px;"></div>
+            <div id="imageResult"></div>
+          </div>
           
           <div class="btn-group">
             <button type="button" class="btn btn-primary" id="runBtn"><i class="fas fa-play"></i> Run Safety Checks</button>
@@ -663,7 +659,6 @@
       </div>
     </div>
   </section>
-  
 
   <!-- BACK TO TOP -->
   <button id="backToTop" title="Go to top">
@@ -672,7 +667,6 @@
 
   <!-- Footer -->
   <footer>
-  
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
@@ -708,9 +702,8 @@
       </div>
     </div>
   </footer>
- 
 
- 
+  <!-- IMPORTANT FIX: Script Path changed to relative 'script.js' -->
+  <script src="script.js" defer></script>
 </body>
-<script src="C:\FOOD SAFETY NEW\script.js" defer></script>
 </html>
