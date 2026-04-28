@@ -13,10 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <!-- TensorFlow.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
   <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
   <!-- Barcode Scanner Library (Quagga2) -->
   <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
 </head>
@@ -41,14 +41,15 @@
           </ul>
         </nav>
         <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode">
-  <i class="fas fa-moon"></i>
-</button>
+          <i class="fas fa-moon"></i>
+        </button>
         <div class="mobile-menu">
           <i class="fas fa-bars"></i>
         </div>
       </div>
     </div>
   </header>
+  
   <div id="progressBar" style="position: fixed; top: 70px; left: 0; width: 0%; height: 4px; background: #facc15; z-index: 999; transition: width 0.1s;"></div>
 
   <!-- Hero Section -->
@@ -210,12 +211,7 @@
         
         <!-- Camera View (hidden by default) -->
         <div id="cameraContainer" style="display:none; position:relative; margin-bottom:15px;">
-            <div id="cameraView" style="width:100%; height:350px; border:3px solid #16a34a; border-radius:10px; overflow:hidden; position:relative; background:#000;">
-                <!-- Quagga will render here -->
-            </div>
-            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none;">
-                <div style="width:250px; height:80px; border:3px solid #16a34a; border-radius:8px; box-shadow:0 0 0 9999px rgba(0,0,0,0.4);"></div>
-            </div>
+            <div id="cameraView" style="width:100%; height:350px; border:3px solid #16a34a; border-radius:10px; overflow:hidden; position:relative; background:#000;"></div>
             <div style="text-align:center; margin-top:8px;">
                 <button id="stopCameraBtn" class="btn" style="background:#dc2626; color:white;">
                     <i class="fas fa-stop"></i> Stop Camera
@@ -276,26 +272,26 @@
               </div>
             </div>
            <div class="col">
-  <div class="form-group">
-    <label class="form-label">FSSAI License (14 digits)</label>
-    <div style="display: flex; gap: 8px; align-items: center;">
-      <input 
-        type="text" 
-        class="form-control" 
-        id="fssai" 
-        placeholder="12345678901234" 
-        maxlength="14">
-      <button 
-        type="button" 
-        class="btn btn-secondary" 
-        id="verifyFssai" 
-        style="white-space: nowrap; padding: 12px 16px;">
-        Verify
-      </button>
-    </div>
-    <small id="fssaiStatus" style="margin-top: 5px; display: block;"></small>
-  </div>
-</div>
+              <div class="form-group">
+                <label class="form-label">FSSAI License (14 digits)</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="fssai" 
+                    placeholder="12345678901234" 
+                    maxlength="14">
+                  <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    id="verifyFssai" 
+                    style="white-space: nowrap; padding: 12px 16px;">
+                    Verify
+                  </button>
+                </div>
+                <small id="fssaiStatus" style="margin-top: 5px; display: block;"></small>
+              </div>
+            </div>
           </div>
           
           <div class="form-group">
@@ -423,13 +419,13 @@
           </div>
           
          <div class="btn-group" style="margin-top:10px; flex-wrap:wrap;">
-  <button type="button" class="btn btn-outline" id="runEDA">📊 Run EDA</button>
-  <button type="button" class="btn btn-outline" id="runLinear">📈 Linear Regression</button>
-  <button type="button" class="btn btn-outline" id="runLogistic">🧠 Logistic Regression</button>
-  <button type="button" class="btn btn-outline" id="runRidge">🛡️ Ridge (L2)</button>
-  <button type="button" class="btn btn-outline" id="runLasso">📏 Lasso (L1)</button>
-  <button type="button" class="btn btn-outline" id="runHist">📊 Histograms</button>
-</div>
+          <button type="button" class="btn btn-outline" id="runEDA">📊 Run EDA</button>
+          <button type="button" class="btn btn-outline" id="runLinear">📈 Linear Regression</button>
+          <button type="button" class="btn btn-outline" id="runLogistic">🧠 Logistic Regression</button>
+          <button type="button" class="btn btn-outline" id="runRidge">🛡️ Ridge (L2)</button>
+          <button type="button" class="btn btn-outline" id="runLasso">📏 Lasso (L1)</button>
+          <button type="button" class="btn btn-outline" id="runHist">📊 Histograms</button>
+        </div>
 <!-- New: Simple Explanations -->
 <div id="ml-explain" style="margin-top:15px; font-size:0.95rem; background:#f0fdf4; padding:12px; border-radius:8px; border-left:4px solid #16a34a;">
   <strong>What is happening?</strong> 
@@ -703,7 +699,7 @@
     </div>
   </footer>
 
-  <!-- IMPORTANT FIX: Script Path changed to relative 'script.js' -->
+  <!-- CRITICAL FIX: Script path changed from Local C:\ to Relative 'script.js' -->
   <script src="script.js" defer></script>
 </body>
 </html>
